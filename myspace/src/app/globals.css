@@ -1,0 +1,150 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =============================================
+   Classic MySpace 2005-inspired Global Theme
+   ============================================= */
+
+/* Reset-ish */
+:root {
+  --ms-blue: #0b60d1; /* link blue */
+  --ms-dark-blue: #003366; /* header/nav dark */
+  --ms-light-blue: #e6f2ff; /* page bg */
+  --ms-border: #a7c0e8; /* module border */
+  --ms-text: #222;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  color: var(--ms-text);
+  font-family: Arial, Helvetica, sans-serif;
+  background:
+    linear-gradient(180deg, var(--ms-light-blue), #ffffff 220px) fixed,
+    repeating-linear-gradient(45deg, #f6f8ff 0 8px, #ffffff 8px 16px) fixed;
+  min-height: 100vh;
+}
+
+/* Anchor styling */
+a { color: var(--ms-blue); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Top bar (matches Navbar.tsx class) */
+.myspace-topbar {
+  background: var(--ms-dark-blue);
+  color: #fff;
+  padding: 10px 0;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.15);
+}
+
+/* Card/module look reminiscent of MySpace profile boxes */
+.card {
+  background: #fff;
+  border: 1px solid var(--ms-border);
+  border-radius: 4px;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.8) inset,
+    0 2px 6px rgba(0, 0, 0, 0.04);
+  padding: 1rem;
+}
+
+.module {
+  background: #fff;
+  border: 1px solid var(--ms-border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.module-title {
+  background: var(--ms-dark-blue);
+  color: #fff;
+  font-weight: bold;
+  padding: 8px 12px;
+  border-bottom: 1px solid #00254d;
+}
+.module-body { padding: 12px; }
+
+/* Buttons */
+.btn { display: inline-flex; align-items: center; gap: 6px; border-radius: 4px; font-weight: 600; }
+.btn:disabled { opacity: .6; cursor: not-allowed; }
+.btn-primary { background: var(--ms-blue); color: #fff; padding: 6px 12px; }
+.btn-primary:hover { filter: brightness(0.95); text-decoration: none; }
+.btn-secondary { background: #eef3ff; color: var(--ms-dark-blue); border: 1px solid var(--ms-border); padding: 6px 12px; }
+.btn-secondary:hover { background: #e6eeff; }
+
+/* Layout helpers for classic two-column profile/feed */
+.classic-container { max-width: 1100px; margin: 0 auto; padding: 16px; }
+.classic-grid {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 16px;
+}
+@media (max-width: 900px) {
+  .classic-grid { grid-template-columns: 1fr; }
+}
+
+.sidebar-left .module + .module { margin-top: 12px; }
+
+/* Typography tweaks */
+h1, h2, h3 { color: #111; }
+small, .muted { color: #666; }
+
+/* Utility classes in the spirit of 2005 CSS but powered by Tailwind */
+.myspace-link { color: var(--ms-blue); text-decoration: underline; }
+.myspace-link:hover { text-decoration: none; }
+
+/* Lists */
+.list-compact li { padding: 4px 0; border-bottom: 1px dotted #d7e3ff; }
+.list-compact li:last-child { border-bottom: 0; }
+
+/* Avatars */
+.avatar { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; background: #e9eef9; border: 1px solid var(--ms-border); }
+.avatar-sm { width: 32px; height: 32px; }
+.avatar-lg { width: 72px; height: 72px; }
+
+/* Badges (e.g., notifications count) */
+.badge {
+  display: inline-block;
+  font-size: 11px;
+  line-height: 1;
+  color: #fff;
+  background: #d64545;
+  border-radius: 999px;
+  padding: 3px 7px;
+}
+
+/* Popover/dropdown */
+.popover { background: #fff; border: 1px solid var(--ms-border); border-radius: 6px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+.popover .popover-header { padding: 8px 12px; border-bottom: 1px solid #e8eefb; font-weight: 600; background: #f6f9ff; }
+.popover .popover-body { padding: 8px 12px; }
+
+/* Inputs */
+.input { border: 1px solid #c9d6f5; border-radius: 4px; padding: 8px 10px; background: #fff; }
+.input:focus { outline: none; border-color: var(--ms-blue); box-shadow: 0 0 0 2px rgba(11,96,209,0.12); }
+.textarea { @apply input; min-height: 80px; }
+
+/* Tables (for any adminish views) */
+.table { width: 100%; border-collapse: collapse; }
+.table th, .table td { border-bottom: 1px solid #e5ecff; padding: 8px; text-align: left; }
+.table th { background: #f4f8ff; font-weight: 700; }
+
+/* Specific tweaks for components already in code */
+
+/* Notification bell button */
+button[aria-haspopup="dialog"].hover\:bg-gray-100:hover { background: rgba(255,255,255,0.15); }
+
+/* Feed cards grid spacing */
+.feed-grid { display: grid; gap: 16px; }
+
+/* Classic panel headers for sections */
+.section-header { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e5ecff; padding-bottom: 8px; margin-bottom: 12px; }
+
+/* Make sure Tailwind base still applies on top */
+@layer base {
+  h1 { @apply text-2xl font-bold; }
+  h2 { @apply text-xl font-semibold; }
+  h3 { @apply text-lg font-semibold; }
+}

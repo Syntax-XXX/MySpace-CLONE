@@ -1,0 +1,27 @@
+{
+  "name": "myspace",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.0.0",
+    "autoprefixer": "^10.0.0",
+    "next": "latest",
+    "postcss": "^8.0.0",
+    "react": "latest",
+    "react-dom": "latest",
+    "tailwindcss": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "19.1.13",
+    "eslint": "^7.0.0",
+    "eslint-config-next": "^11.0.0",
+    "prettier": "^2.0.0"
+  }
+}
