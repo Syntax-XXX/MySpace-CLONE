@@ -69,6 +69,25 @@ export async function uploadUserFile(userId: string, file: File) {
   };
 }
 
+export async function uploadUserAvatar(userId: string, file: File) {
+  const supabase = getSupabaseClient();
+  if (!supabase) throw new Error("Supabase client not configured");
+  if (!userId) throw new Error("Missing userId");
+  if (!file) throw new Error("Missing file");
+  if (!file.type.startsWith("image/")) throw new Error("Avatar must be an image");
+  if (file.size > MAX_BYTES) throw new Error("File too large (max 10MB)");
+
+  const path = `avatars/${userId}.png`;
+  // Convert to PNG by trusting browser to provide PNG, or overwrite as-is;
+  // If you want strict conversion, handle client-side canvas conversion.
+  const { error: upErr } = await supabase.storage
+    .from(BUCKET)
+    .upload(path, file, { upsert: true, cacheControl: "3600", contentType: "image/png" });
+  if (upErr) throw upErr;
+  const { data } = supabase.storage.from(BUCKET).getPublicUrl(path);
+  return { storage_path: path, url: data?.publicUrl || `/api/avatars/${userId}` };
+}
+
 export function publicUrl(path?: string) {
   if (!path) return null;
   const supabase = getSupabaseClient();

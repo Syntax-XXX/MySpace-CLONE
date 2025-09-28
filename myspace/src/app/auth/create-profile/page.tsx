@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import { getSupabaseClient } from "../../../lib/supabaseClient";
 import { useRouter, useSearchParams } from "next/navigation";
 
-export default function CreateProfilePage() {
+function CreateProfileForm() {
   const supabase = getSupabaseClient();
   const router = useRouter();
   const search = useSearchParams();
@@ -85,5 +85,13 @@ export default function CreateProfilePage() {
         </form>
       </div>
     </div>
+  );
+}
+
+export default function CreateProfilePage() {
+  return (
+    <Suspense fallback={<div className="max-w-md mx-auto mt-8">Loading...</div>}>
+      <CreateProfileForm />
+    </Suspense>
   );
 }

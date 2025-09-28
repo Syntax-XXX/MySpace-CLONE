@@ -9,6 +9,7 @@ export default function FriendRequestsPage() {
 
   useEffect(()=>{
     async function load(){
+      if (!supabase) return;
       const u = (await supabase.auth.getUser()).data?.user;
       if(!u) return;
       const { data: inData } = await supabase.from("friend_requests").select("*,requester:requester(*)").eq("recipient", u.id).eq("status","pending");
@@ -20,6 +21,7 @@ export default function FriendRequestsPage() {
   },[supabase]);
 
   async function respond(id:string, action:string){
+    if (!supabase) return;
     const token = (await supabase.auth.getSession()).data?.session?.access_token;
     if (!token) return;
     const res = await fetch("/api/friends/respond", { method:"POST", headers:{ "Content-Type":"application/json", Authorization:`Bearer ${token}` }, body: JSON.stringify({ requestId: id, action }) });

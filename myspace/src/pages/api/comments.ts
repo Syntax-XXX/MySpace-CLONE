@@ -1,7 +1,12 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { supabase } from '../../lib/supabaseClient';
+import { getSupabaseClient } from '../../lib/supabaseClient';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+    const supabase = getSupabaseClient();
+    if (!supabase) {
+        return res.status(500).json({ error: 'Supabase not configured' });
+    }
+
     const { method } = req;
 
     switch (method) {

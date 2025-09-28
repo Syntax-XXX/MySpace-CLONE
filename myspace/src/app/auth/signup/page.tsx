@@ -22,10 +22,13 @@ export default function SignupPage() {
       // Ensure redirect goes back to our verify callback which will auto-log-in
       const redirectTo = `${window.location.origin}/auth/verify-callback`;
 
-      const { data, error } = await supabase.auth.signUp(
-        { email, password },
-        { emailRedirectTo: redirectTo } as any // supabase-js option; cast to any to avoid type mismatch
-      );
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: redirectTo
+        }
+      });
 
       if (error) throw error;
 

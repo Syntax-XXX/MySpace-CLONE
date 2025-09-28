@@ -17,6 +17,7 @@ export default function FriendsPage() {
     async function load() {
       setLoading(true); setErr(null); setInfo(null);
       try {
+        if (!supabase) throw new Error("Supabase not configured");
         const u = (await supabase.auth.getUser()).data?.user;
         if (!u) throw new Error("Not signed in");
         // normalized friends(user_a,user_b)
@@ -54,6 +55,7 @@ export default function FriendsPage() {
   async function unfriend(friendId: string) {
     setErr(null); setInfo(null);
     try {
+      if (!supabase) throw new Error("Supabase not configured");
       const token = (await supabase.auth.getSession()).data?.session?.access_token;
       if (!token) throw new Error("No token");
       const res = await fetch("/api/friends/delete", {
@@ -100,7 +102,7 @@ export default function FriendsPage() {
                   {list.map(f => (
                     <div key={f.id} className="card flex flex-col items-center gap-2">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={`/api/avatars/${f.id}`} alt="avatar" className="avatar" />
+                      <img src={`/api/avatars/${f.id}`} onError={(e:any)=>{e.currentTarget.src='/default-avatar.png'}} alt="avatar" className="avatar" />
                       <div className="text-sm text-center w-full truncate">{f.username || f.id}</div>
                       <div className="flex gap-2">
                         <Link className="btn btn-secondary" href={`/profile/${f.username || f.id}`}>View</Link>

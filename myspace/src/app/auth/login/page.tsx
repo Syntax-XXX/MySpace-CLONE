@@ -15,6 +15,8 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState<string | null>(null);
+  const [actionMsg, setActionMsg] = useState<string | null>(null);
+  const [actionErr, setActionErr] = useState<string | null>(null);
   const router = useRouter();
 
   const onSubmit = async (e: React.FormEvent) => {
@@ -70,6 +72,57 @@ export default function LoginPage() {
             </button>
             {err && <span className="text-sm text-red-600">{err}</span>}
           </div>
+
+          <div className="flex items-center justify-between text-sm mt-2">
+            <button
+              type="button"
+              className="underline"
+              onClick={async () => {
+                setActionMsg(null);
+                setActionErr(null);
+                try {
+                  const supabase = getSupabaseClient();
+                  if (!supabase) throw new Error("Supabase not configured");
+                  const emailInput = window.prompt("Enter your email to reset password:")?.trim();
+                  if (!emailInput) return;
+                  const redirectTo = `${window.location.origin}/auth/verify-callback`;
+                  const { error } = await supabase.auth.resetPasswordForEmail(emailInput, { redirectTo });
+                  if (error) throw error;
+                  setActionMsg("Password reset email sent.");
+                } catch (e: any) {
+                  setActionErr(e?.message || "Failed to send reset email");
+                }
+              }}
+            >
+              Forgot password?
+            </button>
+
+            <button
+              type="button"
+              className="underline"
+              onClick={async () => {
+                setActionMsg(null);
+                setActionErr(null);
+                try {
+                  const supabase = getSupabaseClient();
+                  if (!supabase) throw new Error("Supabase not configured");
+                  const emailInput = window.prompt("Enter your email to resend confirmation:")?.trim();
+                  if (!emailInput) return;
+                  const redirectTo = `${window.location.origin}/auth/verify-callback`;
+                  const { error } = await supabase.auth.resend({ type: "signup", email: emailInput, options: { emailRedirectTo: redirectTo } as any } as any);
+                  if (error) throw error;
+                  setActionMsg("Confirmation email re-sent.");
+                } catch (e: any) {
+                  setActionErr(e?.message || "Failed to resend confirmation");
+                }
+              }}
+            >
+              Resend confirmation
+            </button>
+          </div>
+
+          {actionMsg && <div className="text-green-700 text-sm">{actionMsg}</div>}
+          {actionErr && <div className="text-red-600 text-sm">{actionErr}</div>}
         </form>
       </div>
     </div>

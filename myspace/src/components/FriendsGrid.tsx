@@ -16,11 +16,12 @@ const FriendsGrid: React.FC<{ friends?: Friend[] | null }> = ({ friends }) => {
   return (
     <div className="grid grid-cols-3 gap-4 p-4">
       {list.map((friend) => {
-        const avatar = (friend as any).profile_picture || friend.profilePicture || "/default-avatar.png";
+        const avatar = (friend as any).profile_picture || friend.profilePicture || `/api/avatars/${friend.id}`;
         return (
           <div key={friend.id} className="flex flex-col items-center">
             <img
               src={avatar}
+              onError={(e:any)=>{e.currentTarget.src='/default-avatar.png'}}
               alt={friend.username || "Friend"}
               className="w-20 h-20 rounded-full object-cover mb-2"
             />

@@ -27,7 +27,7 @@ export async function POST(req: Request) {
       // insert friends pair normalized
       const a = reqRow.requester;
       const b = reqRow.recipient;
-      await supabaseAdmin.from("friends").insert([{ user_a: a, user_b: b }], { upsert: false });
+      await supabaseAdmin.from("friends").insert([{ user_a: a, user_b: b }]);
       await supabaseAdmin.from("friend_requests").update({ status: "accepted" }).eq("id", requestId);
       // notify requester
       await supabaseAdmin.from("notifications").insert([{ user_id: reqRow.requester, actor: reqRow.recipient, type: "friend_accept", payload: { requestId } }]);

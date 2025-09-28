@@ -24,12 +24,12 @@ export default function MessagesPage() {
   const channelRef = useRef<any>(null);
 
   useEffect(() => {
-    if (!supabase) return;
     let mounted = true;
     async function init() {
       setLoading(true);
       setError(null);
       try {
+        if (!supabase) throw new Error("Supabase not configured");
         const user = (await supabase.auth.getUser()).data?.user;
         if (!user) {
           setError("Not signed in");
@@ -70,6 +70,7 @@ export default function MessagesPage() {
     let mounted = true;
 
     async function loadConversation() {
+      if (!supabase) return;
       const { data, error } = await supabase
         .from("messages")
         .select("id,from_user,to_user,body,created_at")
@@ -81,6 +82,7 @@ export default function MessagesPage() {
     }
 
     function subscribe() {
+      if (!supabase) return;
       const channel = supabase
         .channel(`messages_${me}_${selected}`)
         .on(
@@ -139,7 +141,7 @@ export default function MessagesPage() {
                 >
                   <div className="flex items-center gap-2">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={f.profile_picture || "/default-avatar.png"} alt="avatar" className="w-8 h-8 rounded-full object-cover" />
+                    <img src={f.profile_picture || `/api/avatars/${f.id}`} onError={(e:any)=>{e.currentTarget.src='/default-avatar.png'}} alt="avatar" className="w-8 h-8 rounded-full object-cover" />
                     <span className="text-sm">{f.username || f.id}</span>
                   </div>
                 </button>

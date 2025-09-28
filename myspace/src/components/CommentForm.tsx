@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
-import { supabase } from '../lib/supabaseClient';
+import { getSupabaseClient } from '../lib/supabaseClient';
 
-const CommentForm = ({ postId }) => {
+interface CommentFormProps {
+    postId: string;
+}
+
+const CommentForm: React.FC<CommentFormProps> = ({ postId }) => {
     const [comment, setComment] = useState('');
+    const supabase = getSupabaseClient();
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!comment) return;
+        if (!comment || !supabase) return;
 
         const { data, error } = await supabase
             .from('comments')
@@ -26,7 +31,7 @@ const CommentForm = ({ postId }) => {
                 onChange={(e) => setComment(e.target.value)}
                 placeholder="Add a comment..."
                 className="p-2 border rounded-md"
-                rows="3"
+                rows={3}
             />
             <button
                 type="submit"

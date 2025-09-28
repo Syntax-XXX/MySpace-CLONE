@@ -18,6 +18,7 @@ export default function NotificationsPage(){
 
   useEffect(()=>{
     async function load(){
+      if (!supabase) return;
       const u = (await supabase.auth.getUser()).data?.user;
       if(!u) return;
       const { data } = await supabase.from("notifications").select("*").eq("user_id", u.id).order("created_at", { ascending: false }).limit(50);
@@ -27,6 +28,7 @@ export default function NotificationsPage(){
   },[supabase]);
 
   async function markReadAll(){
+    if (!supabase) return;
     const ids = items.filter(i=>!i.is_read).map(i=>i.id);
     if(ids.length===0) return;
     const token = (await supabase.auth.getSession()).data?.session?.access_token;

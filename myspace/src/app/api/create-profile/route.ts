@@ -77,7 +77,7 @@ export async function POST(req: Request) {
 
     const { error: upsertErr } = await supabaseAdmin
       .from("users")
-      .upsert(profile, { onConflict: "id", returning: "representation" });
+      .upsert(profile, { onConflict: "id" });
 
     if (upsertErr) {
       console.error("create-profile: upsert error:", upsertErr);

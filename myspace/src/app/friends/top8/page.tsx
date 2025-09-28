@@ -17,6 +17,7 @@ export default function Top8EditorPage() {
     async function load() {
       setMessage(null); setError(null);
       try {
+        if (!supabase) throw new Error("Supabase not configured");
         const u = (await supabase.auth.getUser()).data?.user;
         if (!u) throw new Error("Not signed in");
         const { data: friendLinks } = await supabase
@@ -57,6 +58,7 @@ export default function Top8EditorPage() {
   async function save() {
     setMessage(null); setError(null);
     try {
+      if (!supabase) throw new Error("Supabase not configured");
       const token = (await supabase.auth.getSession()).data?.session?.access_token;
       if (!token) throw new Error("No token");
       const res = await fetch("/api/set-top8",{ method:"POST", headers:{ "Content-Type":"application/json", Authorization:`Bearer ${token}` }, body: JSON.stringify({ top8: order.slice(0,8) }) });

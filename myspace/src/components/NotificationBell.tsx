@@ -27,6 +27,7 @@ export default function NotificationBell() {
     if (!supabase) return;
     let sub: any;
     async function load() {
+      if (!supabase) return;
       const user = (await supabase.auth.getUser()).data?.user;
       if (!user) return;
       const { data, error } = await supabase
